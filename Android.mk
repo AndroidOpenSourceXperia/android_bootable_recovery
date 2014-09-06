@@ -60,6 +60,19 @@ RECOVERY_API_VERSION := 3
 RECOVERY_FSTAB_VERSION := 2
 LOCAL_CFLAGS += -DRECOVERY_API_VERSION=$(RECOVERY_API_VERSION)
 
+ifeq ($(TARGET_DEVICE),kumquat)
+	LOCAL_CFLAGS += -DXPERIA_U
+endif
+ifeq ($(TARGET_DEVICE),pepper)
+	LOCAL_CFLAGS += -DXPERIA_SOLA
+endif
+ifeq ($(TARGET_DEVICE),lotus)
+	LOCAL_CFLAGS += -DXPERIA_GO
+endif
+ifeq ($(TARGET_DEVICE),nypon)
+	LOCAL_CFLAGS += -DXPERIA_P
+endif
+
 #LOCAL_STATIC_LIBRARIES := \
 #    libext4_utils_static \
 #    libsparse_static \
