@@ -965,6 +965,22 @@ int DataManager::GetMagicValue(const string varName, string& value)
 					charging = ' ';
 			}
 			nextSecCheck = curTime.tv_sec + 60;
+#ifdef XPERIA_TWRP_TOUCH
+			string value_on = "255";
+			string value_off = "0";
+			if (charging == '+') {
+				if (lastVal >= 90) {
+					TWFunc::write_file(RED_LED_FILE, value_off);
+					TWFunc::write_file(GREEN_LED_FILE, value_on);
+				} else {
+					TWFunc::write_file(RED_LED_FILE, value_on);
+					TWFunc::write_file(GREEN_LED_FILE, value_off);
+				}
+			} else {
+					TWFunc::write_file(RED_LED_FILE, value_off);
+					TWFunc::write_file(GREEN_LED_FILE, value_off);
+			}
+#endif
 		}
 
 		sprintf(tmp, "%i%%%c", lastVal, charging);
