@@ -2160,7 +2160,7 @@
 				<font resource="font" color="%button_text_color%" />
 				<text>Mount USB Storage</text>
 				<image resource="main_button" />
-				<action function="page">usb_mount</action>
+				<action function="page">select_usb_storage</action>
 			</object>
 
 			<object type="button">
@@ -2215,6 +2215,53 @@
 			<object type="template" name="footer" />
 		</page>
 
+		<page name="select_usb_storage">
+			<object type="template" name="header" />
+
+			<object type="text" color="%text_color%">
+				<font resource="font" />
+				<placement x="%center_x%" y="%row1_header_y%" placement="5" />
+				<text>Select USB Storage To Mount</text>
+			</object>
+
+			<object type="button">
+				<highlight color="%highlight_color%" />
+				<placement x="%col1_x%" y="%row3_y%" />
+				<font resource="font" color="%button_text_color%" />
+				<text>Internal Storage</text>
+				<image resource="main_button" />
+				<actions>
+					<action function="set">storage_selected=internal</action>
+					<action function="page">usb_mount</action>
+				</actions>
+			</object>
+
+			<object type="button">
+				<highlight color="%highlight_color%" />
+				<condition var1="tw_has_dual_storage" var2="1" />
+				<placement x="%col2_x%" y="%row3_y%" />
+				<font resource="font" color="%button_text_color%" />
+				<text>External Storage</text>
+				<image resource="main_button" />
+				<actions>
+					<action function="set">storage_selected=external</action>
+					<action function="page">usb_mount</action>
+				</actions>
+			</object>
+
+			<object type="action">
+				<touch key="home" />
+				<action function="page">main</action>
+			</object>
+
+			<object type="action">
+				<touch key="back" />
+				<action function="page">mount</action>
+			</object>
+
+			<object type="template" name="footer" />
+		</page>
+
 		<page name="usb_mount">
 			<object type="template" name="header" />
 
@@ -2259,7 +2306,7 @@
 			</object>
 
 			<object type="action">
-				<action function="page">mount</action>
+				<action function="page">select_usb_storage</action>
 				<action function="set">tw_busy=0</action>
 			</object>
 		</page>

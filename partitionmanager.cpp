@@ -1511,6 +1511,38 @@ int TWPartitionManager::Open_Lun_File(string Partition_Path, string Lun_File) {
 	return true;
 }
 
+#ifdef XPERIA_TWRP_TOUCH
+int TWPartitionManager::usb_storage_enable(void) {
+	string selected_storage, storage_path;
+	char lun_file[255];
+	string Lun_File_str = CUSTOM_LUN_FILE;
+	size_t found = Lun_File_str.find("%");
+
+	if (found != string::npos) {
+		sprintf(lun_file, CUSTOM_LUN_FILE, 0);
+	}
+
+	DataManager::GetValue("storage_selected", selected_storage);
+
+	if (selected_storage == "internal") {
+		gui_print("Internal Storage Selected For Mounting\n");
+		DataManager::GetValue(TW_INTERNAL_PATH, storage_path);
+		if (!Open_Lun_File(storage_path, lun_file)) {
+			gui_print("Unable to mount internal storage\n");
+			return false;
+		}
+	} else if (selected_storage == "external") {
+		gui_print("External Storage Selected For Mounting\n");
+		DataManager::GetValue(TW_EXTERNAL_PATH, storage_path);
+		if (!Open_Lun_File(storage_path, lun_file)) {
+			gui_print("Unable to mount external storage. Please check if it's inserted.\n");
+			return false;
+		}
+	}
+	property_set("sys.storage.ums_enabled", "1");
+	return true;
+}
+#else
 int TWPartitionManager::usb_storage_enable(void) {
 	int has_dual, has_data_media;
 	char lun_file[255];
@@ -1569,6 +1601,7 @@ error_handle:
 			Disable_MTP();
 	return false;
 }
+#endif
 
 int TWPartitionManager::usb_storage_disable(void) {
 	int index, ret;
